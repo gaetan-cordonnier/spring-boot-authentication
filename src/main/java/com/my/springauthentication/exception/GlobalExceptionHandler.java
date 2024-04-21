@@ -4,15 +4,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NotFoundExceptionMessage.class)
-    public ResponseEntity<ErrorObject> handleAllergenNotFoundException(NotFoundExceptionMessage exception, WebRequest request) {
+    @ExceptionHandler({GenericException.class})
+    public ResponseEntity<ErrorObject> handleGenericException(GenericException exception) {
+
+        ErrorObject errorObject = new ErrorObject();
+
+        errorObject.setStatusCode(exception.getErrorCode());
+        errorObject.setMessage(exception.getErrorMessage());
+        errorObject.setTimestamp(new Date());
+
+        return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.valueOf(errorObject.getStatusCode()));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorObject> handleNotFoundException(NotFoundException exception) {
 
         ErrorObject errorObject = new ErrorObject();
 
@@ -21,5 +32,6 @@ public class GlobalExceptionHandler {
         errorObject.setTimestamp(new Date());
 
         return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+
     }
 }

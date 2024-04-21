@@ -3,8 +3,7 @@ package com.my.springauthentication.dto;
 import lombok.Data;
 
 @Data
-public class SigninDto {
+public class UserDto {
 
     private String email;
-    private String password;
 }

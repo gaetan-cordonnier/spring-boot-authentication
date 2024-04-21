@@ -2,16 +2,15 @@ package com.my.springauthentication.controller;
 
 
 import com.my.springauthentication.dto.JwtDto;
+import com.my.springauthentication.dto.RefreshTokenDto;
 import com.my.springauthentication.dto.SignUpDto;
 import com.my.springauthentication.dto.SigninDto;
 import com.my.springauthentication.model.User;
 import com.my.springauthentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,5 +27,11 @@ public class AuthenticationController {
     @PostMapping("/signin")
     public ResponseEntity<JwtDto> signin(@RequestBody SigninDto signinDto) {
         return ResponseEntity.ok(authenticationService.signin(signinDto));
+    }
+
+    @PostMapping(path = "/refresh")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<JwtDto> refreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+        return new ResponseEntity<>(authenticationService.refreshToken(refreshTokenDto), HttpStatus.CREATED);
     }
 }

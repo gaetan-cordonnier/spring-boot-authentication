@@ -17,4 +17,6 @@ public interface JWTService {
     Boolean isTokenExpired(String token);
 
     String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails);
+
+
 }

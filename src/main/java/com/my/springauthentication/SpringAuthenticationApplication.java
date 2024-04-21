@@ -32,5 +32,4 @@ public class SpringAuthenticationApplication implements CommandLineRunner {
 			userRepository.save(user);
 		}
 	}
-
 }

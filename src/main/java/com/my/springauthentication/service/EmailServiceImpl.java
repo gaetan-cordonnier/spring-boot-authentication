@@ -1,4 +1,4 @@
-package com.my.springauthentication.service.impl;
+package com.my.springauthentication.service;
 
 import com.my.springauthentication.service.EmailService;
 import jakarta.mail.MessagingException;

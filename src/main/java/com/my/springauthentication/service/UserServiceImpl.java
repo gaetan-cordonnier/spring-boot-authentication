@@ -1,8 +1,7 @@
-package com.my.springauthentication.service.impl;
+package com.my.springauthentication.service;
 
 import com.my.springauthentication.model.User;
 import com.my.springauthentication.repository.UserRepository;
-import com.my.springauthentication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

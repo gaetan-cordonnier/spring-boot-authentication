@@ -1,18 +1,15 @@
-package com.my.springauthentication.service.impl;
+package com.my.springauthentication.service;
 
 
 import com.my.springauthentication.dto.JwtDto;
 import com.my.springauthentication.dto.RefreshTokenDto;
-import com.my.springauthentication.dto.SignUpDto;
 import com.my.springauthentication.dto.SignInDto;
+import com.my.springauthentication.dto.SignUpDto;
 import com.my.springauthentication.exception.GenericException;
 import com.my.springauthentication.exception.NotFoundException;
 import com.my.springauthentication.model.Role;
 import com.my.springauthentication.model.User;
 import com.my.springauthentication.repository.UserRepository;
-import com.my.springauthentication.service.AuthenticationService;
-import com.my.springauthentication.service.EmailService;
-import com.my.springauthentication.service.JWTService;
 import com.my.springauthentication.utils.ConstantUtils;
 import com.my.springauthentication.utils.GenerateCodeUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.thymeleaf.context.Context;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -40,6 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
 
     public User signUp(SignUpDto signUpDto) {
+        if (userRepository.findByEmail(signUpDto.getEmail()).isPresent()) {
+            throw new GenericException(409, ConstantUtils.USER_ALREADY_EXIST);
+        }
+
         User user = new User();
 
         user.setFirstname(signUpDto.getFirstname());
@@ -47,17 +48,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        if (userRepository.findByEmail(signUpDto.getEmail()).isPresent()) {
-            throw new GenericException(409, ConstantUtils.USER_ALREADY_EXIST);
-        }
-
         return userRepository.save(user);
     }
 
     public JwtDto signin(SignInDto signinDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinDto.getEmail(), signinDto.getPassword()));
 
-        var user = userRepository.findByEmail(signinDto.getEmail()).orElseThrow(()->new IllegalArgumentException(ConstantUtils.USER_NOT_FOUND));
+        var user = userRepository.findByEmail(signinDto.getEmail()).orElseThrow(() -> new IllegalArgumentException(ConstantUtils.USER_NOT_FOUND));
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
@@ -90,7 +87,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String forgotPassword(String email) {
         Integer verificationCode = GenerateCodeUtils.randomCode();
-        System.out.println(verificationCode);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(ConstantUtils.USER_NOT_FOUND));
         user.setVerification(verificationCode);
         userRepository.save(user);

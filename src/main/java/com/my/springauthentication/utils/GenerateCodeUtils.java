@@ -9,5 +9,4 @@ public class GenerateCodeUtils {
 
         return random.nextInt(9000) + 1000;
     }
-
 }

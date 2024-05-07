@@ -1,0 +1,24 @@
+spring.application.name=spring-authentication
+
+spring.datasource.url=jdbc:mysql://localhost:3306/BDD_NAME?
+spring.datasource.username=BDD_USER
+spring.datasource.password=BDD_PASSWORD
+
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.open-in-view=true
+spring.jpa.hibernate.ddl-auto=CREATE OR UPDATE...
+spring.jpa.properties.hibernate.format_sql=true
+
+spring.mail.host=smtp.gmail.com
+spring.mail.username=EMAIL_ACCOUNT
+spring.mail.password=EMAIL_ACCOUNT_PASSWORD
+spring.mail.port=587
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+admin.firstname=Admin
+admin.email=admin@app.com
+admin.password=P@ssw0rd
+admin.language=fr-FR
+
+auth.hash-key=413F4428472B4B6250655368566D5970337336763979244226452948404D6351

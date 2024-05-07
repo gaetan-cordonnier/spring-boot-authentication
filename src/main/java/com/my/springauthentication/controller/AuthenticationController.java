@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,7 +21,15 @@ public class AuthenticationController {
 
     @PostMapping(path = "/signup")
     public ResponseEntity<User> signUp(@RequestBody SignUpDto signUpDto) {
-        return ResponseEntity.ok(authenticationService.signUp(signUpDto));
+        User newUser = authenticationService.signUp(signUpDto);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newUser.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(newUser);
     }
 
     @PostMapping(path = "/signin")

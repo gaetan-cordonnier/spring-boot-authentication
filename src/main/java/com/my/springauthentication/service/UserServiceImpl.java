@@ -1,7 +1,9 @@
-package com.my.springauthentication.service;
+package com.my.springauthentication.service.impl;
 
 import com.my.springauthentication.model.User;
 import com.my.springauthentication.repository.UserRepository;
+import com.my.springauthentication.service.UserService;
+import com.my.springauthentication.utils.ConstantUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,5 +31,10 @@ public class UserServiceImpl implements UserService {
 
     public Optional<User> getUserDetails(Long id) {
         return userRepository.findById(id);
+    }
+
+    public String deleteUser(Long id) {
+        userRepository.deleteById(id);
+        return ConstantUtils.USER_DELETED;
     }
 }

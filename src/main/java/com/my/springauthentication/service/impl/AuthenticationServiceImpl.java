@@ -3,8 +3,8 @@ package com.my.springauthentication.service.impl;
 
 import com.my.springauthentication.dto.JwtDto;
 import com.my.springauthentication.dto.RefreshTokenDto;
-import com.my.springauthentication.dto.SignUpDto;
 import com.my.springauthentication.dto.SignInDto;
+import com.my.springauthentication.dto.SignUpDto;
 import com.my.springauthentication.exception.GenericException;
 import com.my.springauthentication.exception.NotFoundException;
 import com.my.springauthentication.model.Role;
@@ -20,8 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.thymeleaf.context.Context;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -57,7 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public JwtDto signin(SignInDto signinDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinDto.getEmail(), signinDto.getPassword()));
 
-        var user = userRepository.findByEmail(signinDto.getEmail()).orElseThrow(()->new IllegalArgumentException(ConstantUtils.USER_NOT_FOUND));
+        var user = userRepository.findByEmail(signinDto.getEmail()).orElseThrow(() -> new IllegalArgumentException(ConstantUtils.USER_NOT_FOUND));
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
 
@@ -90,7 +90,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String forgotPassword(String email) {
         Integer verificationCode = GenerateCodeUtils.randomCode();
-        System.out.println(verificationCode);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(ConstantUtils.USER_NOT_FOUND));
         user.setVerification(verificationCode);
         userRepository.save(user);

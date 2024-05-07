@@ -16,7 +16,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(path = "/details")
-      public ResponseEntity<Optional<User>> getUserDetails(@RequestParam Long id) {
+    public ResponseEntity<Optional<User>> getUserDetails(@RequestParam Long id) {
         return ResponseEntity.ok(userService.getUserDetails(id));
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<String> deleteUser(@RequestParam Long id) {
+        return ResponseEntity.ok(userService.deleteUser(id));
     }
 }

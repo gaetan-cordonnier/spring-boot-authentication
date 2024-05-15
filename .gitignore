@@ -4,9 +4,6 @@
 # Log file
 *.log
 
-# Test files
-/target/*
-
 # BlueJ files
 *.ctxt
 
@@ -27,7 +24,13 @@ hs_err_pid*
 replay_pid*
 
 #IntelliJ
-*.idea
+.idea/
+*.iml
+*.iws
+
+# Maven
+log/
+target/
 
 # Env
 *.properties

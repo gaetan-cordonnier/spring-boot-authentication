@@ -1,9 +1,6 @@
 package com.my.springauthentication.service;
 
-import com.my.springauthentication.dto.JwtDto;
-import com.my.springauthentication.dto.RefreshTokenDto;
-import com.my.springauthentication.dto.SignInDto;
-import com.my.springauthentication.dto.SignUpDto;
+import com.my.springauthentication.dto.*;
 import com.my.springauthentication.exception.GenericException;
 import com.my.springauthentication.model.Role;
 import com.my.springauthentication.model.User;
@@ -23,6 +20,7 @@ import org.thymeleaf.context.Context;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -104,12 +102,13 @@ public class AuthenticationServiceImplTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User user = invocation.getArgument(0);
+            user.setId(UUID.randomUUID());
             return user;
         });
 
-        User newUser = authenticationService.signUp(signUpDto);
+        UserDto newUser = authenticationService.signUp(signUpDto);
 
-        assertThat(newUser.getPassword()).isEqualTo("encodedPassword");
+        assertThat(newUser.getId()).isNotNull();
         assertThat(newUser.getFirstname()).isEqualTo("Woody");
 
         verify(userRepository, times(1)).findByEmail("noyoveg746@picdv.com");
@@ -119,11 +118,11 @@ public class AuthenticationServiceImplTest {
 
 
     @Test
-    void testSignin_UserNotFound() {
+    void testSignIn_UserNotFound() {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> {
-            authenticationService.signin(signInDto);
+            authenticationService.signIn(signInDto);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining(ConstantUtils.USER_NOT_FOUND);
 
@@ -131,7 +130,7 @@ public class AuthenticationServiceImplTest {
     }
 
     @Test
-    void testSignin_Success() {
+    void testSignIn_Success() {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.of(user));
         when(jwtService.generateToken(any(User.class))).thenReturn("jwtToken");
@@ -139,7 +138,7 @@ public class AuthenticationServiceImplTest {
         when(jwtService.generateRefreshToken(Mockito.<Map<String, Object>>any(), any(User.class)))
                 .thenReturn("refreshToken");
 
-        JwtDto jwtResponse = authenticationService.signin(signInDto);
+        JwtDto jwtResponse = authenticationService.signIn(signInDto);
 
         assertThat(jwtResponse.getToken()).isEqualTo("jwtToken");
         assertThat(jwtResponse.getRefreshToken()).isEqualTo("refreshToken");

@@ -2,7 +2,6 @@ package com.my.springauthentication.controller;
 
 
 import com.my.springauthentication.dto.*;
-import com.my.springauthentication.model.User;
 import com.my.springauthentication.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping(path = "/signup")
-    public ResponseEntity<User> signUp(@RequestBody SignUpDto signUpDto) {
-        User newUser = authenticationService.signUp(signUpDto);
+    public ResponseEntity<UserDto> signUp(@RequestBody SignUpDto signUpDto) {
+        UserDto newUser = authenticationService.signUp(signUpDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -34,7 +33,7 @@ public class AuthenticationController {
 
     @PostMapping(path = "/signin")
     public ResponseEntity<JwtDto> signin(@RequestBody SignInDto signinDto) {
-        return ResponseEntity.ok(authenticationService.signin(signinDto));
+        return ResponseEntity.ok(authenticationService.signIn(signinDto));
     }
 
     @PostMapping(path = "/refresh")

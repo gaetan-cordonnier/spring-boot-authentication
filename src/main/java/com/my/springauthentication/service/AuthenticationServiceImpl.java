@@ -1,10 +1,7 @@
 package com.my.springauthentication.service;
 
 
-import com.my.springauthentication.dto.JwtDto;
-import com.my.springauthentication.dto.RefreshTokenDto;
-import com.my.springauthentication.dto.SignInDto;
-import com.my.springauthentication.dto.SignUpDto;
+import com.my.springauthentication.dto.*;
 import com.my.springauthentication.exception.GenericException;
 import com.my.springauthentication.exception.NotFoundException;
 import com.my.springauthentication.model.Role;
@@ -36,7 +33,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final EmailService emailService;
 
-    public User signUp(SignUpDto signUpDto) {
+    private static UserDto getUserDetailsDto(User newUser) {
+        UserDto userDetails = new UserDto();
+        userDetails.setId(newUser.getId());
+        userDetails.setFirstname(newUser.getFirstname());
+        userDetails.setLastname(newUser.getLastname());
+        userDetails.setEmail(newUser.getEmail());
+        userDetails.setRole(newUser.getRole());
+        userDetails.setLanguage(newUser.getLanguage());
+        userDetails.setTheme(newUser.getTheme());
+        userDetails.setValidated(newUser.getValidated());
+        userDetails.setVerification(newUser.getVerification());
+        return userDetails;
+    }
+
+    public UserDto signUp(SignUpDto signUpDto) {
         if (userRepository.findByEmail(signUpDto.getEmail()).isPresent()) {
             throw new GenericException(409, ConstantUtils.USER_ALREADY_EXIST);
         }
@@ -48,10 +59,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setRole(Role.USER);
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        return userRepository.save(user);
+        User newUser = userRepository.save(user);
+
+        return getUserDetailsDto(newUser);
     }
 
-    public JwtDto signin(SignInDto signinDto) {
+    public JwtDto signIn(SignInDto signinDto) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinDto.getEmail(), signinDto.getPassword()));
 
         var user = userRepository.findByEmail(signinDto.getEmail()).orElseThrow(() -> new IllegalArgumentException(ConstantUtils.USER_NOT_FOUND));

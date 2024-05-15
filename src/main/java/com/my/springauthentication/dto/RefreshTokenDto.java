@@ -1,8 +1,10 @@
 package com.my.springauthentication.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RefreshTokenDto {
 
     private String token;

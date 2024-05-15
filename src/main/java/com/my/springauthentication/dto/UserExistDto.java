@@ -1,11 +1,13 @@
 package com.my.springauthentication.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserExistDto {
 
-    private boolean emailExist;
+    private final boolean emailExist;
 
     public UserExistDto(boolean emailExists) {
         this.emailExist = emailExists;

@@ -1,15 +1,16 @@
 package com.my.springauthentication.service;
 
-import com.my.springauthentication.model.User;
+import com.my.springauthentication.dto.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
 
     UserDetailsService userDetailsService();
 
-    Optional<User> getUserDetails(Long id);
+    Optional<UserDto> getUserDetails(UUID id);
 
-    String deleteUser(Long id);
+    String deleteUser(UUID id);
 }

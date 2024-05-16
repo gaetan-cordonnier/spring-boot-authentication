@@ -6,6 +6,8 @@ import com.my.springauthentication.model.User;
 import com.my.springauthentication.repository.UserRepository;
 import com.my.springauthentication.utils.ConstantUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,5 +60,9 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteByUuid(uuid);
         return ConstantUtils.USER_DELETED;
+    }
+
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

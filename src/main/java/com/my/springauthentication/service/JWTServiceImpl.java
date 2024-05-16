@@ -1,7 +1,5 @@
 package com.my.springauthentication.service;
 
-import com.my.springauthentication.exception.GenericException;
-import com.my.springauthentication.service.JWTService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +31,6 @@ public class JWTServiceImpl implements JWTService {
     public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + 30000))
                 .setExpiration(new Date(System.currentTimeMillis() + 604800000))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
@@ -43,7 +40,7 @@ public class JWTServiceImpl implements JWTService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private<T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
     }

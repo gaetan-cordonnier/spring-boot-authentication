@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static UserDto getUserDetailsDto(User newUser) {
         UserDto userDetails = new UserDto();
-        userDetails.setId(newUser.getId());
+        userDetails.setId(newUser.getUuid());
         userDetails.setFirstname(newUser.getFirstname());
         userDetails.setLastname(newUser.getLastname());
         userDetails.setEmail(newUser.getEmail());

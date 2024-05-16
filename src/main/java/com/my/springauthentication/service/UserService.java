@@ -10,7 +10,7 @@ public interface UserService {
 
     UserDetailsService userDetailsService();
 
-    Optional<UserDto> getUserDetails(UUID id);
+    Optional<UserDto> getUserDetails(UUID uuid);
 
-    String deleteUser(UUID id);
+    String deleteUser(UUID uuid);
 }

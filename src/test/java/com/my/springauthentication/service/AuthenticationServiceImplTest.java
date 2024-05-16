@@ -102,7 +102,7 @@ public class AuthenticationServiceImplTest {
         when(userRepository.findByEmail(any(String.class))).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User user = invocation.getArgument(0);
-            user.setId(UUID.randomUUID());
+            user.setUuid(UUID.randomUUID());
             return user;
         });
 

@@ -1,9 +1,6 @@
 package com.my.springauthentication.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,9 +22,11 @@ import java.util.UUID;
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Long id;
     @UuidGenerator(style = UuidGenerator.Style.RANDOM)
     @Column(columnDefinition = "BINARY(16)")
-    protected UUID id;
+    protected UUID uuid;
     @Column(length = 150)
     private String firstname;
     @Column(length = 150)
@@ -55,9 +54,9 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private Date updated;
 
-//    public User() {
-//        this.uuid = UUID.randomUUID();
-//    }
+    public User() {
+        this.uuid = UUID.randomUUID();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

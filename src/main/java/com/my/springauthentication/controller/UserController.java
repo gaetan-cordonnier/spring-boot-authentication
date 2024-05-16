@@ -17,12 +17,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(path = "/details")
-    public ResponseEntity<Optional<UserDto>> getUserDetails(@RequestParam UUID id) {
-        return ResponseEntity.ok(userService.getUserDetails(id));
+    public ResponseEntity<Optional<UserDto>> getUserDetails(@RequestParam UUID uuid) {
+        return ResponseEntity.ok(userService.getUserDetails(uuid));
     }
 
     @DeleteMapping(path = "/delete")
-    public ResponseEntity<String> deleteUser(@RequestParam UUID id) {
-        return ResponseEntity.ok(userService.deleteUser(id));
+    public ResponseEntity<String> deleteUser(@RequestParam UUID uuid) {
+        return ResponseEntity.ok(userService.deleteUser(uuid));
     }
 }
